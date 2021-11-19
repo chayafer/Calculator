@@ -32,7 +32,7 @@ namespace CalculatorTest
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApplication2", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CalculatorTest", Version = "v1" });
             });
             
             Assembly.GetEntryAssembly().GetTypesAssignableFrom<IOperatorService>().ForEach((t) =>
@@ -50,7 +50,7 @@ namespace CalculatorTest
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApplication2 v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CalculatorTest v1"));
             }
 
             app.UseHttpsRedirection();
