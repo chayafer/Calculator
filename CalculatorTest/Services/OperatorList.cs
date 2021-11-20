@@ -17,7 +17,10 @@ namespace CalculatorTest.Services
 
         public string[] GetOperators()
         {
-            return _configuration.GetSection("Operators")?.Value?.Split(",");
+            var operators = _configuration.GetSection("Operators")?.Value;
+            if (string.IsNullOrEmpty(operators))
+                return null;
+            return operators.Split(",");
         }
     }
 }

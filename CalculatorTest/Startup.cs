@@ -1,3 +1,4 @@
+using CalculatorTest.Middleware;
 using CalculatorTest.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -63,6 +64,8 @@ namespace CalculatorTest
             app.UseRouting();
                        
             app.UseAuthorization();
+
+            app.UseMiddleware(typeof(ErrorHandler));
 
             app.UseEndpoints(endpoints =>
             {

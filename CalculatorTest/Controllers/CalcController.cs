@@ -19,30 +19,42 @@ namespace IceTest.Server.Controllers
         private readonly IEnumerable<IOperatorService> _services;
         private readonly IOperatorList _operatorList;
 
-        public CalcController(IEnumerable<IOperatorService> services,IOperatorList operatorList)
+        public CalcController(IEnumerable<IOperatorService> services, IOperatorList operatorList)
         {
             _services = services;
             _operatorList = operatorList;
         }
 
-        
+
 
         [HttpGet]
         [Route("Calc")]
-        public ActionResult<float> Calc([FromQuery][Required]float param1, [FromQuery][Required] float param2, [FromQuery][Required] string operatorName)
+        public ActionResult<float> Calc([FromQuery][Required] float param1, [FromQuery][Required] float param2, [FromQuery][Required] string operatorName)
         {
-            var service = _services.Where(s => s.Name ==operatorName).Single();
+            var opertators = _operatorList.GetOperators();
+            if (!opertators.Contains(operatorName))
+            {
+                throw new Exception($"operator name {operatorName} does not exist in appsettings");
+            }
 
-            return Ok(service.Calc(param1,param2));
+            var service = _services.Where(s => s.Name == operatorName).SingleOrDefault();
+            if(service == null)
+            {
+                throw new Exception($"There is no service with name {operatorName}");
+            }
+            return Ok(service.Calc(param1, param2));
         }
 
         [HttpGet]
         [Route("Operators")]
         public ActionResult<string[]> GetOperators()
         {
-            return Ok(_operatorList.GetOperators());
+            var operators = _operatorList.GetOperators();
+            if (operators == null || operators.Length == 0)
+                throw new Exception("operator list in appsettings is null");
+            return Ok(operators);
         }
 
-        
+
     }
 }
